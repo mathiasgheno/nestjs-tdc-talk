@@ -1,7 +1,9 @@
 import { Controller, Get, Param, Query } from "@nestjs/common";
 import { SongsService } from "./songs.service";
-import { observable, Observable } from "rxjs";
+import { ApiImplicitQuery, ApiUseTags } from "@nestjs/swagger";
+import { genres as genresEnum } from '../data/songs';
 
+@ApiUseTags('songs')
 @Controller('songs')
 export class SongsController {
 
@@ -15,7 +17,12 @@ export class SongsController {
   }
 
   @Get()
-  findByGenres(@Query('genre') genres: string[] | string) {
+  @ApiImplicitQuery({
+    isArray: true,
+    name: 'genre',
+    enum: genresEnum,
+  })
+  findByGenres(@Query('genre') genres) {
     if (typeof genres === 'string') {
       genres = [genres];
     }

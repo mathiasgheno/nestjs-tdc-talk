@@ -59,6 +59,11 @@ const songs = [
   }
 ];
 
+export const genres = [
+  'Psy Trance',
+  'Trance'
+];
+
 export default () => {
   console.log('satanás');
   return Promise.resolve(songs);

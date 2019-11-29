@@ -1,7 +1,9 @@
 import { Controller, Get, Param } from "@nestjs/common";
 import { DjsService } from "./djs.service";
 import { SongsService } from "../songs/songs.service";
+import { ApiUseTags } from "@nestjs/swagger";
 
+@ApiUseTags('djs')
 @Controller('djs')
 export class DjsController {
 
