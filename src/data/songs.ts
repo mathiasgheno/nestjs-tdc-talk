@@ -7,7 +7,7 @@ export interface ISong {
   genre: string[],
 }
 
-const songs = [
+let songs = [
   {
     id: 1,
     name: 'Reactivation',
@@ -65,6 +65,19 @@ export const genres = [
 ];
 
 export default () => {
-  console.log('satanás');
-  return Promise.resolve(songs);
+  return {
+    get: () => {
+      return Promise.resolve(songs)
+    },
+    put: song => {
+      songs = songs.map(s => s.id == song.id ? song : s);
+    },
+    post: song => {
+      song.id = songs.length + 1;
+      songs.push(song);
+    },
+    delete: id => {
+      songs = songs.filter(s => s.id != id);
+    }
+  }
 }
