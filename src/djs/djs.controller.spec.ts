@@ -1,6 +1,5 @@
 import { DjsController } from './djs.controller';
 
-
 describe('Unit: DJ Controller', () => {
   let djController;
   let djService;
