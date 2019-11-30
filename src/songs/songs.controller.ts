@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Get, Param, Post, Put, Query } from "@nestjs/common";
-import { ApiImplicitBody, ApiImplicitParam, ApiImplicitQuery, ApiUseTags } from "@nestjs/swagger";
+import { ApiImplicitBody, ApiImplicitParam, ApiImplicitQuery, ApiResponse, ApiUseTags } from "@nestjs/swagger";
 import { SongsService } from "./songs.service";
-import { genres as genresEnum } from '../data/songs';
+import { genres as genresEnum, SongDTO } from "../data/songs";
 
 @ApiUseTags('songs')
 @Controller('songs')
@@ -12,18 +12,40 @@ export class SongsController {
   ) {}
 
   @Get(':id')
-  findSongById(@Param('id') id) {
-    return this.songsService.getSong(id);
-  }
-
-  @Delete()
   @ApiImplicitParam({
     required: true,
     description: 'ID ',
     name: 'id',
   })
+  @ApiResponse({
+    status: 201,
+    type: SongDTO,
+  })
+  findSongById(@Param('id') id) {
+    return this.songsService.getSong(id);
+  }
+
+  @Delete(':id')
+  @ApiImplicitParam({
+    required: true,
+    description: 'ID ',
+    name: 'id',
+  })
+  @ApiResponse({
+    status: 201,
+    type: [SongDTO],
+  })
   deleteSong(@Param('id') id) {
     return this.songsService.deleteSong(id);
+  }
+
+  @Put()
+  @ApiResponse({
+    status: 201,
+    type: [SongDTO],
+  })
+  updateSong(@Body() song: SongDTO) {
+    return this.songsService.putSong(song)
   }
 
   @Get()
@@ -32,6 +54,10 @@ export class SongsController {
     name: 'genre',
     enum: genresEnum,
   })
+  @ApiResponse({
+    status: 201,
+    type: [SongDTO],
+  })
   findByGenres(@Query('genre') genres) {
     if (typeof genres === 'string') genres = [ genres ];
     const formatedGenres = genres.map(g => g.toLowerCase());
@@ -39,24 +65,17 @@ export class SongsController {
   }
 
   @Post()
+  @ApiResponse({
+    status: 201,
+    type: [SongDTO],
+  })
   @ApiImplicitBody({
-    type: Object,
+    type: SongDTO,
     name: 'song',
     required: true,
     description: 'Song you want to persist',
   })
   persistSong(@Body() song) {
     return this.songsService.postSong(song);
-  }
-
-  @Put()
-  @ApiImplicitBody({
-    type: Object,
-    name: 'song',
-    required: true,
-    description: 'Song you want to update',
-  })
-  updateSong(@Body() song) {
-    return this.songsService.putSong(song)
   }
 }

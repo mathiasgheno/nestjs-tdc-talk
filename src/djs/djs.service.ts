@@ -4,7 +4,7 @@ import DJS, { IDJ } from '../data/djs';
 @Injectable()
 export class DjsService {
 
-  async getDjById(id): Promise<IDJ> {
+  async getDj(id): Promise<IDJ> {
     const myDjs = await DJS();
     return myDjs
       .find(dj => dj.id == id);

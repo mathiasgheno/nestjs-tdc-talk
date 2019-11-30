@@ -1,3 +1,4 @@
+import { ApiModelProperty } from "@nestjs/swagger";
 
 export interface ISong {
   id: number,
@@ -5,6 +6,23 @@ export interface ISong {
   artists: string[],
   releaseYear: number,
   genre: string[],
+}
+
+export class SongDTO implements ISong {
+  @ApiModelProperty()
+  readonly id: number;
+
+  @ApiModelProperty()
+  readonly name: string;
+
+  @ApiModelProperty()
+  readonly artists: string[];
+
+  @ApiModelProperty()
+  readonly releaseYear: number;
+
+  @ApiModelProperty()
+  readonly genre: string[];
 }
 
 let songs = [
@@ -73,7 +91,6 @@ export default () => {
       songs = songs.map(s => s.id == song.id ? song : s);
     },
     post: song => {
-      song.id = songs.length + 1;
       songs.push(song);
     },
     delete: id => {

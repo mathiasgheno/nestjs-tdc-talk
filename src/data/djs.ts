@@ -1,9 +1,26 @@
+import { ApiModelProperty } from "@nestjs/swagger";
+import { SongDTO } from "./songs";
 
 export interface IDJ {
   id: number,
   name: string,
   spotifyLink: string,
   genders: string[],
+}
+
+export class DjsDTO implements IDJ {
+  @ApiModelProperty() readonly id: number;
+  @ApiModelProperty() readonly name: string;
+  @ApiModelProperty() readonly spotifyLink: string;
+  @ApiModelProperty() readonly genders: string[];
+}
+
+export class DjsWithSongs extends DjsDTO {
+  @ApiModelProperty({
+    isArray: true,
+    required: true,
+    type: SongDTO,
+  }) readonly songs;
 }
 
 const djs: IDJ[] = [
